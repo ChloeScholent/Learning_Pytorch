@@ -87,6 +87,26 @@ print(f'hstacked={hstacked} \n vstacked={vstacked}')
 
 indexed_tensor = torch.arange(1,10).reshape(1,3,3)
 
+
+#Pytorch and Numpy
+#array to tensor
+array = np.arange(1.0, 8.0)
+
+tensor = torch.from_numpy(array)
+
+print(array, tensor)
+#np default dtype is float64 while pytorch dtype is float32. pytorch reflects np dtype unsless specified
+
+
+
+#tensor to array
+
+tensor_2 = torch.ones(2,2)
+numpy_tensor = tensor_2.numpy()
+
+print(tensor_2, numpy_tensor)
+
+
 print(indexed_tensor)
 
 print(indexed_tensor[0, 2, 2])
