@@ -61,7 +61,36 @@ def plot_predictions(train_data=X_train,
 
 
 ##Building our first Pytorch model
+class LinearRegressionModel(nn.Module): #almost everything in pytorch inhereit from nn.Modile
+    def __init__(self):
+        super().__init__()
+        self.weight= nn.Parameter(torch.randn(1, #start with random weight and try to adjust it to the ideal one
+                                                requires_grad=True, 
+                                                dtype=torch.float))
+        self.bias = nn.Parameter(torch.randn(1,  # start with random bias and try to adjust them to an ideal one
+                                                requires_grad=True,
+                                                dtype=torch.float))
 
+    #Forward method to define the computation for the model
+    def forward(self, x: torch.Tensor) -> torch.Tensor: # X is the input data
+        return self.weight*x+self.bias
+
+#Create a random seed
+torch.manual_seed(42)
+
+#Create an instance of the model created above (subclass of nn.Module)
+model_0 = LinearRegressionModel()
+print(list(model_0.parameters()))
+
+#Making preicions using torch.inference_mode()
+
+with torch.inference_mode(): #this method turns off the tracking of the gradient descent (faster computation)
+    y_preds = model_0(X_test)
+    print(y_preds)
+
+#can also be done like: y_preds = model_0(X_test), and the gradient descent is tracked
+
+#plot_predictions(predictions=y_preds)
 
 
 
