@@ -35,7 +35,6 @@ print(torch.matmul(matrix_1, matrix_2))
 print(torch.mm(matrix_1, matrix_2))
 
 #Switching dimension of a tensor
-
 print(matrix_2.T)
 x = torch.mm(matrix_2, matrix_2.T)
 print(x)
@@ -43,11 +42,9 @@ print(x)
 x = x.type(torch.float32)
 
 #Tensor aggregation (min, max, mean, sum etc)
-
 print(x.min(), x.max(), x.mean(), x.sum(), x.median())
 
 #Find position in the tensor for the max and the min
-
 print(x.argmin(), x.argmax())
 
 
@@ -84,7 +81,6 @@ print(f'hstacked={hstacked} \n vstacked={vstacked}')
 
 
 #indexing on a tensor
-
 indexed_tensor = torch.arange(1,10).reshape(1,3,3)
 
 
@@ -97,16 +93,10 @@ tensor = torch.from_numpy(array)
 print(array, tensor)
 #np default dtype is float64 while pytorch dtype is float32. pytorch reflects np dtype unsless specified
 
-
-
 #tensor to array
-
 tensor_2 = torch.ones(2,2)
 numpy_tensor = tensor_2.numpy()
 
 print(tensor_2, numpy_tensor)
-
-
 print(indexed_tensor)
-
 print(indexed_tensor[0, 2, 2])
