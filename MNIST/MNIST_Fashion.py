@@ -22,7 +22,9 @@ from sklearn.metrics import confusion_matrix, classification_report
 import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
+from torch.utils.tensorboard import SummaryWriter
 
+writer = SummaryWriter()
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print('Device:', device)
@@ -122,7 +124,10 @@ for epoch in range(epochs):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-
+    losses = sum(losses)/len(losses)
+    train_acc = sum(accs)/len(accs)
+    writer.add_scalar('Accuracy/Train', train_acc, epoch)
+    writer.add_scalar('Loss/Train', losses, epoch)
 #EVALUATION
     Fashion_Model_CNN.eval()
     with torch.inference_mode():
@@ -135,15 +140,20 @@ for epoch in range(epochs):
             test_losses.append(test_loss.item())
             test_acc = accuracy_fn(test_outputs, test_labels)
             test_accs.append(test_acc)
-        
-        if epoch % 10 == 0:
-            print(f'Epoch: {epoch} | Loss: {(sum(losses)/len(losses)):.5f}, Accuracy: {(sum(accs)/len(accs)):.2f}% | Test loss: {(sum(test_losses)/len(test_losses)):.5f}, Test acc: {(sum(test_accs)/len(test_accs)):.2f}%')
+        test_accs = sum(test_accs)/len(test_accs)
+        test_loss = sum(test_losses)/len(test_losses)
+    writer.add_scalar('Loss/Test', test_loss, epoch)
+    writer.add_scalar('Accuracy/Test', test_accs, epoch)
+    if epoch % 10 == 0:
+        print(f'Epoch: {epoch} | Loss: {losses:.5f}, Accuracy: {sum(accs)/len(accs):.2f}% | Test loss: {(sum(test_losses)/len(test_losses)):.5f}, Test acc: {test_accs:.2f}%')
 
 
 
 print('\n')
 print('Training completed')
 
+writer.flush()
+writer.close()
 
 #Confusion matrix and classification report
 
